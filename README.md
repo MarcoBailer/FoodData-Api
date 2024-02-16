@@ -1,2 +1,2 @@
 ** API para consulta 
-API sendo utilizada no projeto CNUTRA
+- API sendo utilizada no projeto CNUTRA
