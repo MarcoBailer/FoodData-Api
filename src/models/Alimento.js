@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     calorias: DataTypes.DOUBLE,
     vitaminas: DataTypes.STRING,
     minerais: DataTypes.STRING,
+    fibra_alimentar: DataTypes.DOUBLE,
   }, {
     sequelize,
     modelName: 'Alimento',

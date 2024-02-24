@@ -18,6 +18,7 @@ db.run(`CREATE TABLE IF NOT EXISTS alimentos (
   proteinas REAL,
   lipidios REAL,
   calorias REAL,
+  fibra_alimentar REAL,
   vitaminas TEXT
   minerais TEXT
   createdAt TEXT,
@@ -25,10 +26,10 @@ db.run(`CREATE TABLE IF NOT EXISTS alimentos (
 )`);
 
 // Insira os dados na tabela
-const stmt = db.prepare('INSERT INTO alimentos (categoria_id, nome, grupo, carboidratos, proteinas, lipidios, calorias, vitaminas, minerais, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+const stmt = db.prepare('INSERT INTO alimentos (categoria_id, nome, grupo, carboidratos, proteinas, lipidios, calorias, fibra_alimentar, vitaminas, minerais, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 
 alimentosFormatados.forEach((alimento) => {
-  stmt.run(alimento.categoria_id, alimento.nome, alimento.grupo, alimento.carboidratos, alimento.proteinas, alimento.lipidios, alimento.calorias, alimento.vitaminas, alimento.minerais, alimento.createdAt, alimento.updatedAt);
+  stmt.run(alimento.categoria_id, alimento.nome, alimento.grupo, alimento.carboidratos, alimento.proteinas, alimento.lipidios, alimento.calorias, alimento.fibra_alimentar, alimento.vitaminas, alimento.minerais, alimento.createdAt, alimento.updatedAt);
 });
 
 // Finalize o comando de inserção

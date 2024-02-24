@@ -29,7 +29,7 @@ for (let i = 0; i < json_data.length; i++) {
     proteinas: dados['Proteína(g)'],
     lipidios: dados['Lipídeos(g)'],
     calorias: dados['Energia(kcal)'],
-    fibbras: dados['Fibra(g)'],
+    fibra_alimentar: dados['Fibra Alimentar(g)'],
     vitaminas: `Vitamina A: ${dados['Retinol(mcg)'] || 'NA'}, Vitamina C: ${dados['VitaminaC(mg)'] || 'NA'} , Vitamina B1: ${dados['Tiamina(mg)'] || 'NA'}, Vitamina B2: ${dados['Riboflavina(mg)'] || 'NA'}, Vitamina B6: ${dados['Piridoxina(mg)'] || 'NA'}, Vitamina B3: ${dados['Niacina(mg)'] || 'NA'}`,
     minerais: `Cálcio: ${dados['Calcio(mg)'] || 'NA'}, Magnésio: ${dados['Magnesio(mg)'] || 'NA'}, Manganês: ${dados['Manganes(mg)'] || 'NA'}, Fósforo: ${dados['Fosforo(mg)'] || 'NA'}, Ferro: ${dados['Ferro(mg)'] || 'NA'}, Sódio: ${dados['Sodio(mg)'] || 'NA'}, Potássio: ${dados['Potassio(mg)'] || 'NA'}, Cobre: ${dados['Cobre(mcg)'] || 'NA'}, Zinco: ${dados['Zinco(mg)'] || 'NA'}, Selênio: ${dados['Selenio(mcg)'] || 'NA'}`,
     createdAt: new Date(),
