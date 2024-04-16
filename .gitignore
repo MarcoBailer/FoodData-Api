@@ -1,3 +1,4 @@
 node_modules,
-database.sqlite
-alimentos.json
+database.sqlite,
+alimentos.json,
+categorias.json

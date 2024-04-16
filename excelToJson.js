@@ -18,6 +18,8 @@ const json_data = XLSX.utils.sheet_to_json(sheet);
 // Exemplo: Acessar informações específicas do JSON
 const alimentosFormatados = [];
 
+const categoriasFormatadas = [];
+
 for (let i = 0; i < json_data.length; i++) {
   const dados = json_data[i];
 
@@ -25,17 +27,23 @@ for (let i = 0; i < json_data.length; i++) {
     grupo: dados['Grupo'],
     categoria_id: categorias[dados['Grupo']],
     nome: dados['Descrição do Alimento'],
-    carboidratos: dados['Carboidrato(g)'],
-    proteinas: dados['Proteína(g)'],
-    lipidios: dados['Lipídeos(g)'],
-    calorias: dados['Energia(kcal)'],
-    fibra_alimentar: dados['Fibra Alimentar(g)'],
+    carboidratos: parseFloat(dados['Carboidrato(g)']).toFixed(2),
+    proteinas: parseFloat(dados['Proteína(g)']).toFixed(2),
+    lipidios: parseFloat(dados['Lipídeos(g)']).toFixed(2),
+    calorias: parseFloat(dados['Energia(kcal)']).toFixed(2),
+    fibra_alimentar: parseFloat(dados['Fibra Alimentar(g)']).toFixed(2),
     vitaminas: `Vitamina A: ${dados['Retinol(mcg)'] || 'NA'}, Vitamina C: ${dados['VitaminaC(mg)'] || 'NA'} , Vitamina B1: ${dados['Tiamina(mg)'] || 'NA'}, Vitamina B2: ${dados['Riboflavina(mg)'] || 'NA'}, Vitamina B6: ${dados['Piridoxina(mg)'] || 'NA'}, Vitamina B3: ${dados['Niacina(mg)'] || 'NA'}`,
     minerais: `Cálcio: ${dados['Calcio(mg)'] || 'NA'}, Magnésio: ${dados['Magnesio(mg)'] || 'NA'}, Manganês: ${dados['Manganes(mg)'] || 'NA'}, Fósforo: ${dados['Fosforo(mg)'] || 'NA'}, Ferro: ${dados['Ferro(mg)'] || 'NA'}, Sódio: ${dados['Sodio(mg)'] || 'NA'}, Potássio: ${dados['Potassio(mg)'] || 'NA'}, Cobre: ${dados['Cobre(mcg)'] || 'NA'}, Zinco: ${dados['Zinco(mg)'] || 'NA'}, Selênio: ${dados['Selenio(mcg)'] || 'NA'}`,
     createdAt: new Date(),
     updatedAt: new Date()
   };
   alimentosFormatados.push(alimentoFormatado);
+  
+  const categoriaFormatada = {
+    id: categorias[dados['Grupo']],
+    nome: dados['Grupo']
+  };
+  categoriasFormatadas.push(categoriaFormatada);
 }
 
 //criar um arquivo .JSON com os dados formatados
@@ -45,6 +53,7 @@ for (let i = 0; i < json_data.length; i++) {
 // Verificar se já existe um arquivo .JSON e se sim, verificar seus itens e adicionar os novos itens de forma que não haja repetição
 
 let alimentosExistentes = [];
+let categoriasExistentes = [];
 
 try{
   const rawData = fs.readFileSync('./arquivo_base/alimentos.json');
@@ -52,6 +61,28 @@ try{
 }catch(error){
   // informar que o arquivo não existe
   console.log('O arquivo não existe ou está com algum problema: ' + error);
+}
+
+try{
+  const rawData = fs.readFileSync('./arquivo_base/categorias.json');
+  categoriasExistentes = JSON.parse(rawData);
+}catch(error){
+  // informar que o arquivo não existe
+  console.log('O arquivo não existe ou está com algum problema: ' + error);
+}
+
+const categoriaJaExiste = (categoriaNova) => {
+  return categoriasExistentes.some((categoriaExistente)=>{
+    return (
+      categoriaExistente.nome === categoriaNova.nome
+      );
+  });
+}
+
+const adicionarCategoria = (categoriaNova) => {
+  if(!categoriaJaExiste(categoriaNova)){
+    categoriasExistentes.push(categoriaNova);
+  }
 }
 
 const alimentoJaExiste = (alimentoNovo) => {
@@ -72,7 +103,11 @@ alimentosFormatados.forEach(alimento =>{
   adicionarAlimento(alimento);
 })
 
+categoriasFormatadas.forEach(categoria =>{
+  adicionarCategoria(categoria);
+})
+
 fs.writeFileSync('./arquivo_base/alimentos.json', JSON.stringify(alimentosExistentes, null, 2));
+fs.writeFileSync('./arquivo_base/categorias.json', JSON.stringify(categoriasExistentes, null, 2));
 
 // console.log(alimentosFormatados);
-

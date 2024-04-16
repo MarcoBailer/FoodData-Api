@@ -2,11 +2,19 @@ const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
 // Carregue os dados do arquivo JSON
-const rawData = fs.readFileSync('./arquivo_base/alimentos.json');
-const alimentosFormatados = JSON.parse(rawData);
+const rawDataCategorias = fs.readFileSync('./arquivo_base/categorias.json');
+const categoriasFormatadas = await JSON.parse(rawDataCategorias);
 
-// Abra uma conexão com o banco de dados SQLite (certifique-se de ter um arquivo de banco de dados SQLite criado)
-const db = new sqlite3.Database('database.sqlite');
+const rawDataAlimentos = fs.readFileSync('./arquivo_base/alimentos.json');
+const alimentosFormatados = await JSON.parse(rawDataAlimentos);
+
+// Abra uma conexão com o banco de dados SQLite
+const db = new sqlite3.Database('./src/database/storage/database.sqlite');
+
+db.run(`CREATE TABLE IF NOT EXISTS categorias (
+  id INTEGER PRIMARY KEY,
+  nome TEXT
+)`);
 
 // Crie uma tabela no banco de dados (se ainda não existir)
 db.run(`CREATE TABLE IF NOT EXISTS alimentos (
@@ -24,6 +32,13 @@ db.run(`CREATE TABLE IF NOT EXISTS alimentos (
   createdAt TEXT,
   updatedAt TEXT
 )`);
+
+
+const stmtCategoria = db.prepare('INSERT INTO categorias (id, nome) VALUES (?, ?)');
+
+categoriasFormatadas.forEach((categoria) => {
+  stmtCategoria.run(categoria.id, categoria.nome);
+});
 
 // Insira os dados na tabela
 const stmt = db.prepare('INSERT INTO alimentos (categoria_id, nome, grupo, carboidratos, proteinas, lipidios, calorias, fibra_alimentar, vitaminas, minerais, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');

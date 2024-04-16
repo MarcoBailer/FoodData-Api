@@ -1,8 +1,8 @@
 //servicos com metodos responsaveis por fazer a comunicacao com o banco de dados
 const { Op } = require('sequelize');
-const database = require('../models');
-const Minerais = require('../models/otherObjects/Minerais.js');
-const Vitaminas = require('../models/otherObjects/Vitaminas.js');
+const database = require('../database/models');
+const Minerais = require('../database/models/otherObjects/Minerais.js');
+const Vitaminas = require('../database/models/otherObjects/Vitaminas.js');
 class Service {
     constructor(model){
         this.model = model;
@@ -42,6 +42,9 @@ class Service {
         } catch (error) {
             throw error;
         }
+    }
+    async getCategoriaByIdService(id){
+        return await database[this.model].findByPk(id);
     }
     async getByNomeService(nome){
         try{
