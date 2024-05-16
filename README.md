@@ -20,7 +20,7 @@
 - contento Grupo, nome, carbo, prot, lipidios, fibra 
 
 ## Como utilizar
-- npm install, npx sequelize-cli db:migrate, node importData.js
+- npm install, npx sequelize-cli db:migrate, node excelToJson.js, node importData.js
 
 ## Banco
 - SQLite
